@@ -29,11 +29,9 @@ import java.util.List;
  */
 public class ExempleJDBC {
 
-  /** URL JDBC d'une base SQLite en mémoire (jetable, parfaite pour débuter et pour les tests). */
   public static final String URL_MEMOIRE = "jdbc:sqlite::memory:";
 
   public static void main(String[] args) throws SQLException {
-    // Étape 2 : ouvrir la connexion (try-with-resources => fermeture automatique, étape 5).
     try (Connection connexion = DriverManager.getConnection(URL_MEMOIRE)) {
       creerEtRemplirTable(connexion);
 
@@ -65,13 +63,21 @@ public class ExempleJDBC {
    */
   static List<String> lireTaxons(Connection connexion) throws SQLException {
     List<String> lignes = new ArrayList<>();
-
     // TODO exercice 1 : lire la table taxon.
     //
-    // 1. Créer une instruction : connexion.createStatement() (dans un try-with-resources).
-    // 2. Exécuter le SELECT : st.executeQuery("SELECT code, nom_vernaculaire FROM taxon").
-    // 3. Parcourir le ResultSet avec while (rs.next()) et, pour chaque ligne, ajouter à `lignes`
-    //    la chaîne : rs.getString("code") + " - " + rs.getString("nom_vernaculaire").
+    // 1. Créer une instruction : connexion.createStatement() (dans un
+    // try-with-resources).
+    // 2. Exécuter le SELECT : st.executeQuery("SELECT code, nom_vernaculaire FROM
+    // taxon").
+    // 3. Parcourir le ResultSet avec while (rs.next()) et, pour chaque ligne,
+    // ajouter à `lignes`
+    // la chaîne : rs.getString("code") + " - " + rs.getString("nom_vernaculaire").
+    try (Statement st = connexion.createStatement();
+        ResultSet rs = st.executeQuery("SELECT code, nom_vernaculaire FROM taxon")) {
+      while (rs.next()) {
+        lignes.add(rs.getString("code") + " - " + rs.getString("nom_vernaculaire"));
+      }
+    }
 
     return lignes;
   }
