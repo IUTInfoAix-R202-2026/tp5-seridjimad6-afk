@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -35,7 +34,6 @@ class SitesControllerTest {
     return robot.lookup("#tableSites").queryAs(TableView.class);
   }
 
-  @Disabled("Retire cette annotation pour activer le test")
   @Test
   void le_tableau_affiche_les_sites_persistes(FxRobot robot) {
     assertThat(table(robot).getItems())
@@ -43,7 +41,6 @@ class SitesControllerTest {
         .isNotEmpty();
   }
 
-  @Disabled("Retire cette annotation pour activer le test")
   @Test
   void ajouter_un_site_via_le_formulaire_ajoute_une_ligne(FxRobot robot) {
     int avant = table(robot).getItems().size();
@@ -65,7 +62,6 @@ class SitesControllerTest {
     assertThat(table(robot).getItems()).hasSize(avant + 1);
   }
 
-  @Disabled("Retire cette annotation pour activer le test")
   @Test
   void les_colonnes_affichent_les_donnees_du_site(FxRobot robot) {
     TableView<Site> t = table(robot);
@@ -82,7 +78,6 @@ class SitesControllerTest {
         .isEqualTo(premier.protocole());
   }
 
-  @Disabled("Retire cette annotation pour activer le test")
   @Test
   void le_resume_affiche_le_nombre_de_sites(FxRobot robot) {
     Label resume = robot.lookup("#labelResume").queryAs(Label.class);
@@ -91,7 +86,6 @@ class SitesControllerTest {
         .contains("site(s) suivi(s)");
   }
 
-  @Disabled("Retire cette annotation pour activer le test")
   @Test
   void la_liste_des_protocoles_propose_les_deux_valeurs(FxRobot robot) {
     @SuppressWarnings("unchecked")
@@ -99,7 +93,6 @@ class SitesControllerTest {
     assertThat(protocole.getItems()).containsExactly("PointFixeStandard", "PointFixeRecherche");
   }
 
-  @Disabled("Retire cette annotation pour activer le test")
   @Test
   void le_bouton_supprimer_est_desactive_sans_selection_puis_actif(FxRobot robot) {
     Button supprimer = robot.lookup("#boutonSupprimer").queryAs(Button.class);
