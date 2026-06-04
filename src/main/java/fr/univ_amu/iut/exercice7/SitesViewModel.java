@@ -3,6 +3,7 @@ package fr.univ_amu.iut.exercice7;
 import com.google.inject.Inject;
 import fr.univ_amu.iut.exercice4.Site;
 import fr.univ_amu.iut.exercice4.SiteDao;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -30,11 +31,10 @@ public class SitesViewModel {
   public SitesViewModel(SiteDao dao) {
     this.dao = dao;
 
-    // TODO exercice 7 : charger les sites depuis la base et lier le résumé.
-    //
-    // - remplir `sites` avec tous les sites du DAO (dao.findAll), via setAll ;
-    // - lier `resume` à une chaîne dérivée du nombre de sites (Bindings.size(sites)),
-    //   au format attendu par le test (cf. SitesViewModelTest).
+    sites.setAll(dao.findAll());
+    resume.bind(
+        Bindings.createStringBinding(
+            () -> sites.size() + " site(s) suivi(s)", Bindings.size(sites)));
   }
 
   public ObservableList<Site> sitesProperty() {
@@ -47,11 +47,13 @@ public class SitesViewModel {
 
   /** Persiste un nouveau site puis l'ajoute à la liste observable. */
   public void ajouterCommand(Site site) {
-    // TODO exercice 7 : insérer le site en base (dao.insert) puis l'ajouter à `sites`.
+    dao.insert(site);
+    sites.add(site);
   }
 
   /** Supprime un site de la base puis de la liste observable. */
   public void supprimerCommand(Site site) {
-    // TODO exercice 7 : supprimer le site en base (dao.delete) puis le retirer de `sites`.
+    dao.delete(site.numeroCarre());
+    sites.remove(site);
   }
 }
